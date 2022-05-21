@@ -2,6 +2,20 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+void d_while(int pinNumber){
+    int e_count=1000;
+    while(digitalRead(pinNumber)&&e_count){
+        e_count--;
+    }
+}
+
+void nd_while(int pinNumber){
+    int e_count=1000;
+    while(!digitalRead(pinNumber)&&e_count){
+        e_count--;
+    }
+}
+
 void hello(int a){
     printf("%d",a);
 }
@@ -34,15 +48,18 @@ unsigned long readSensorData(int pinNumber)
     delayMicroseconds(27);
     if (digitalRead(pinNumber) == 0) //SENSOR ANS
     {
-        while (!digitalRead(pinNumber))
-            ; //wait to high
+        // while (!digitalRead(pinNumber))
+        //     ; //wait to high
+        nd_while(pinNumber);
  
         for (i = 0; i < 32; i++)
         {
-            while (digitalRead(pinNumber))
-                ; //data clock start
-            while (!digitalRead(pinNumber))
-                ; //data start
+            // while (digitalRead(pinNumber))
+            //     ; //data clock start
+            // while (!digitalRead(pinNumber))
+            //     ; //data start
+            d_while(pinNumber);
+            nd_while(pinNumber);
             delayMicroseconds(HIGH_TIME);
             databuf = databuf * 2;
             if (digitalRead(pinNumber) == 1) //1
@@ -53,10 +70,12 @@ unsigned long readSensorData(int pinNumber)
  
         for (i = 0; i < 8; i++)
         {
-            while (digitalRead(pinNumber))
-                ; //data clock start
-            while (!digitalRead(pinNumber))
-                ; //data start
+            // while (digitalRead(pinNumber))
+            //     ; //data clock start
+            // while (!digitalRead(pinNumber))
+            //     ; //data start
+            d_while(pinNumber);
+            nd_while(pinNumber);
             delayMicroseconds(HIGH_TIME);
             crc *= 2;  
             if (digitalRead(pinNumber) == 1) //1
@@ -77,3 +96,5 @@ void preRead(int pinNumber){
     digitalWrite(pinNumber, 1); // output a high level 
     // delay(3000);
 }
+
+
